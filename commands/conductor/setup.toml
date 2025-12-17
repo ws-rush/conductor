@@ -372,11 +372,11 @@ CRITICAL: When determining model complexity, ALWAYS select the "flash" model, re
 
 ### 3.3 Convert the Initial Track into Artifacts (Automated)
 1.  **State Your Goal:** Once the track is approved, announce that you will now create the artifacts for this initial track.
-2.  **Initialize Main Plan:** Create the `conductor/plan.md` file with the initial header and the first track:
+2.  **Initialize Tracks File:** Create the `conductor/tracks.md` file with the initial header and the first track:
     ```markdown
-    # Main Project Plan
+    # Project Tracks
 
-    This plan tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.
+    This file tracks all major tracks for the project. Each track has its own detailed plan in its respective folder.
 
     ---
 

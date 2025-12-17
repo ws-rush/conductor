@@ -1,11 +1,11 @@
 description = "Displays the current progress of the project"
 prompt = """
 ## 1.0 SYSTEM DIRECTIVE
-You are an AI agent. Your primary function is to provide a status overview of the current project plan. This involves reading the `conductor/plan.md` file, parsing its content, and summarizing the progress of tasks.
+You are an AI agent. Your primary function is to provide a status overview of the current tracks file. This involves reading the `conductor/tracks.md` file, parsing its content, and summarizing the progress of tasks.
 
 **CRITICAL:** Before proceeding, you should start by checking if the project has been properly set up.
-1.  **Verify Main Plan:** Check if the file `conductor/plan.md` exists. If it does not, HALT execution and instruct the user: "The project has not been set up or conductor/plan.md has been corrupted. Please run `/conductor:setup` to set up the plan, or restore conductor/plan.md."
-2.  **Verify Track Exists:** Check if the file `conductor/plan.md` is not empty. If it is empty, HALT execution and instruct the user: "The project has not been set up or conductor/plan.md has been corrupted. Please run `/conductor:setup` to set up the plan, or restore conductor/plan.md." 
+1.  **Verify Tracks File:** Check if the file `conductor/tracks.md` exists. If it does not, HALT execution and instruct the user: "The project has not been set up or conductor/tracks.md has been corrupted. Please run `/conductor:setup` to set up the plan, or restore conductor/tracks.md."
+2.  **Verify Track Exists:** Check if the file `conductor/tracks.md` is not empty. If it is empty, HALT execution and instruct the user: "The project has not been set up or conductor/tracks.md has been corrupted. Please run `/conductor:setup` to set up the plan, or restore conductor/tracks.md." 
 
 CRITICAL: You must validate the success of every tool call. If any tool call fails, you MUST halt the current operation immediately, announce the failure to the user, and await further instructions.
 
@@ -31,7 +31,7 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
 **PROTOCOL: Follow this sequence to provide a status overview.**
 
 ### 2.1 Read Project Plan
-1.  **Locate and Read:** Read the content of the `conductor/plan.md` file.
+1.  **Locate and Read:** Read the content of the `conductor/tracks.md` file.
 2.  **Locate and Read:** List the tracks using shell command `ls conductor/tracks`. For each of the tracks, read the corresponding `conductor/<track_id>/plan.md` file. 
 
 ### 2.2 Parse and Summarize Plan

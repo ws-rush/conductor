@@ -10,8 +10,8 @@ Your workflow MUST anticipate and handle common non-linear Git histories, such a
 **CRITICAL**: The user's explicit confirmation is required at multiple checkpoints. If a user denies a confirmation, the process MUST halt immediately and follow further instructions. 
 
 **CRITICAL:** Before proceeding, you should start by checking if the project has been properly set up.
-1.  **Verify Main Plan:** Check if the file `conductor/plan.md` exists. If it does not, HALT execution and instruct the user: "The project has not been set up or conductor/plan.md has been corrupted. Please run `/conductor:setup` to set up the plan, or restore conductor/plan.md."
-2.  **Verify Track Exists:** Check if the file `conductor/plan.md` is not empty. If it is empty, HALT execution and instruct the user: "The project has not been set up or conductor/plan.md has been corrupted. Please run `/conductor:setup` to set up the plan, or restore conductor/plan.md." 
+1.  **Verify Tracks File:** Check if the file `conductor/tracks.md` exists. If it does not, HALT execution and instruct the user: "The project has not been set up or conductor/tracks.md has been corrupted. Please run `/conductor:setup` to set up the plan, or restore conductor/tracks.md."
+2.  **Verify Track Exists:** Check if the file `conductor/tracks.md` is not empty. If it is empty, HALT execution and instruct the user: "The project has not been set up or conductor/tracks.md has been corrupted. Please run `/conductor:setup` to set up the plan, or restore conductor/tracks.md." 
 
 **CRITICAL**: You must validate the success of every tool call. If any tool call fails, you MUST halt the current operation immediately, announce the failure to the user, and await further instructions.
 
@@ -29,7 +29,7 @@ Your workflow MUST anticipate and handle common non-linear Git histories, such a
 3.  **Interaction Paths:**
 
     *   **PATH A: Direct Confirmation**
-        1.  Find the specific track, phase, or task the user referenced in the project's `plan.md` files.
+        1.  Find the specific track, phase, or task the user referenced in the project's `tracks.md` or `plan.md` files.
         2.  Ask the user for confirmation: "You asked to revert the [Track/Phase/Task]: '[Description]'. Is this correct?".
             - **Structure:**
                 A) Yes
@@ -38,7 +38,7 @@ Your workflow MUST anticipate and handle common non-linear Git histories, such a
 
     *   **PATH B: Guided Selection Menu**
         1.  **Identify Revert Candidates:** Your primary goal is to find relevant items for the user to revert.
-            *   **Scan All Plans:** You MUST read the main `conductor/plan.md` and every `conductor/tracks/*/plan.md` file.
+            *   **Scan All Plans:** You MUST read the main `conductor/tracks.md` and every `conductor/tracks/*/plan.md` file.
             *   **Prioritize In-Progress:** First, find **all** Tracks, Phases, and Tasks marked as "in-progress" (`[~]`).
             *   **Fallback to Completed:** If and only if NO in-progress items are found, find the **5 most recently completed** Tasks and Phases (`[x]`).
         2.  **Present a Unified Hierarchical Menu:** You MUST present the results to the user in a clear, numbered, hierarchical list grouped by Track. The introductory text MUST change based on the context.
@@ -84,7 +84,7 @@ Your workflow MUST anticipate and handle common non-linear Git histories, such a
 
 3.  **Identify the Track Creation Commit (Track Revert Only):**
     *   **IF** the user's intent is to revert an entire track, you MUST perform this additional step.
-    *   **Method:** Use `git log -- conductor/plan.md` and search for the commit that first introduced the `## [ ] Track: <Track Description>` line for the target track into the main plan.
+    *   **Method:** Use `git log -- conductor/tracks.md` and search for the commit that first introduced the `## [ ] Track: <Track Description>` line for the target track into the tracks file.
     *   Add this "track creation" commit's SHA to the list of commits to be reverted.
 
 4.  **Compile and Analyze Final List:**

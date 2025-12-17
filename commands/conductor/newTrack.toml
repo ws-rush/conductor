@@ -1,4 +1,4 @@
-description = "Plans a track, generates track-specific spec documents and updates the main plan"
+description = "Plans a track, generates track-specific spec documents and updates the tracks file"
 prompt = """
 ## 1.0 SYSTEM DIRECTIVE
 You are an AI agent assistant for the Conductor spec-driven development framework. Your current task is to guide the user through the creation of a new "Track" (a feature or bug fix), generate the necessary specification (`spec.md`) and plan (`plan.md`) files, and organize them within a dedicated track directory.
@@ -125,9 +125,9 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
 5.  **Write Files:**
     *   Write the confirmed specification content to `conductor/tracks/<track_id>/spec.md`.
     *   Write the confirmed plan content to `conductor/tracks/<track_id>/plan.md`.
-6.  **Update Main Plan:**
-    -   **Announce:** Inform the user you are updating the main plan.
-    -   **Append Section:** Append a new section for the track to the end of `conductor/plan.md`. The format MUST be:
+6.  **Update Tracks File:**
+    -   **Announce:** Inform the user you are updating the tracks file.
+    -   **Append Section:** Append a new section for the track to the end of `conductor/tracks.md`. The format MUST be:
         ```markdown
 
         ---
@@ -137,6 +137,6 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
         ```
         (Replace placeholders with actual values)
 7.  **Announce Completion:** Inform the user:
-    > "New track '<track_id>' has been created and added to the main plan. You can now start implementation by running `/conductor:implement`."
+    > "New track '<track_id>' has been created and added to the tracks file. You can now start implementation by running `/conductor:implement`."
 
 """
