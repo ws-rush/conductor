@@ -2,9 +2,9 @@
 
 **Measure twice, code once.**
 
-Conductor is a Gemini CLI extension that enables **Context-Driven Development**. It turns the Gemini CLI into a proactive project manager that follows a strict protocol to plan, specify, and implement software features and bug fixes.
+Conductor is a Gemini CLI extension that enables **Context-Driven Development**. It turns the Gemini CLI into a proactive project manager that follows a strict protocol to specify, plan, and implement software features and bug fixes.
 
-Instead of just writing code, Conductor ensures a consistent, high-quality lifecycle for every task: **Context -> Spec -> Plan -> Implement -> Verify**.
+Instead of just writing code, Conductor ensures a consistent, high-quality lifecycle for every task: **Context -> Spec & Plan -> Implement**.
 
 The philosophy behind Conductor is simple: control your code. By treating context as a managed artifact alongside your code, you transform your repository into a single source of truth that drives every agent interaction with deep, persistent project awareness.
 
@@ -15,7 +15,7 @@ The philosophy behind Conductor is simple: control your code. By treating contex
 - **Iterate safely**: Review plans before code is written, keeping you firmly in the loop.
 - **Work as a team**: Set project-level context for your product, tech stack, and workflow preferences that become a shared foundation for your team.
 - **Build on existing projects**: Intelligent initialization for both new (Greenfield) and existing (Brownfield) projects.
-- **Smart Revert**: A git-aware revert command that understands logical units of work (Tracks, Phases, Tasks) rather than just commit hashes.
+- **Smart revert**: A git-aware revert command that understands logical units of work (tracks, phases, tasks) rather than just commit hashes.
 
 ## Installation
 
@@ -31,15 +31,24 @@ The `--auto-update` is optional: if specified, it will update to new versions as
 
 Conductor is designed to manage the entire lifecycle of your development tasks.
 
-**Note on Token Consumption:** Conductor's context-driven approach involves reading and analyzing your project's context, specifications, and plans. This can lead to increased token consumption, especially in larger projects or during extensive planning and implementation phases. Please be mindful of your Gemini API usage.
+**Note on Token Consumption:** Conductor's context-driven approach involves reading and analyzing your project's context, specifications, and plans. This can lead to increased token consumption, especially in larger projects or during extensive planning and implementation phases. You can check the token consumption in the current session by running `/stats model`.
 
-### 1. Setup the Project (Run Once)
+### 1. Set Up the Project (Run Once)
 
 When you run `/conductor:setup`, Conductor helps you define the core components of your project context. This context is then used for building new components or features by you or anyone on your team.
 
-- **Product**: Define your users, product goals, and high-level features.
-- **Tech stack**: Configure your preferences for language, database, and frameworks.
-- **Workflow**: Set your preferences for how your team functions (e.g., TDD).
+- **Product**: Define project context (e.g. users, product goals, high-level features).
+- **Product guidelines**: Define standards (e.g. prose style, brand messaging, visual identity).
+- **Tech stack**: Configure technical preferences (e.g. language, database, frameworks).
+- **Workflow**: Set team preferences (e.g. TDD, commit strategy). Uses [workflow.md](templates/workflow.md) as a customizable template.
+
+**Generated Artifacts:**
+- `.conductor/product.md`
+- `.conductor/product-guidelines.md`
+- `.conductor/tech-stack.md`
+- `.conductor/workflow.md`
+- `.conductor/code_styleguides/`
+- `.conductor/plan.md`
 
 ```bash
 /conductor:setup
@@ -50,7 +59,12 @@ When you run `/conductor:setup`, Conductor helps you define the core components 
 When you’re ready to take on a new feature or bug fix, run `/conductor:newTrack`. This initializes a **track** — a high-level unit of work. Conductor helps you generate two critical artifacts:
 
 - **Specs**: The detailed requirements for the specific job. What are we building and why?
-- **Plan**: An actionable to-do list containing Phases, Tasks, and Sub-tasks.
+- **Plan**: An actionable to-do list containing phases, tasks, and sub-tasks.
+
+**Generated Artifacts:**
+- `.conductor/tracks/<track_id>/spec.md`
+- `.conductor/tracks/<track_id>/plan.md`
+- `.conductor/tracks/<track_id>/metadata.json`
 
 ```bash
 /conductor:newTrack
@@ -62,6 +76,11 @@ When you’re ready to take on a new feature or bug fix, run `/conductor:newTrac
 
 Once you approve the plan, run `/conductor:implement`. Your coding agent then works through the `plan.md` file, checking off tasks as it completes them.
 
+**Updated Artifacts:**
+- `.conductor/plan.md` (Status updates)
+- `.conductor/tracks/<track_id>/plan.md` (Status updates)
+- Project context files (Synchronized on completion)
+
 ```bash
 /conductor:implement
 ```
@@ -70,32 +89,28 @@ Conductor will:
 1.  Select the next pending task.
 2.  Follow the defined workflow (e.g., TDD: Write Test -> Fail -> Implement -> Pass).
 3.  Update the status in the plan as it progresses.
+4.  **Verify Progress**: Guide you through a manual verification step at the end of each phase to ensure everything works as expected.
 
-### 4. Check Status
+During implementation, you can also:
 
-Get a high-level overview of your project's progress.
-
-```bash
-/conductor:status
-```
-
-### 5. Revert Work
-
-If you need to undo a feature or a specific task, use the smart revert command. It finds the relevant commits associated with that logical unit of work.
-
-```bash
-/conductor:revert
-```
+- **Check status**: Get a high-level overview of your project's progress.
+  ```bash
+  /conductor:status
+  ```
+- **Revert work**: Undo a feature or a specific task if needed.
+  ```bash
+  /conductor:revert
+  ```
 
 ## Commands Reference
 
-| Command | Description |
-| :--- | :--- |
-| `/conductor:setup` | Scaffolds the project and sets up the Conductor environment. Run this once per project. |
-| `/conductor:newTrack` | Starts a new Feature or Bug track. Generates `spec.md` and `plan.md`. |
-| `/conductor:implement` | Executes the tasks defined in the current track's plan. |
-| `/conductor:status` | Displays the current progress of the main plan and active tracks. |
-| `/conductor:revert` | Reverts a Track, Phase, or Task by analyzing git history. |
+| Command | Description | Artifacts |
+| :--- | :--- | :--- |
+| `/conductor:setup` | Scaffolds the project and sets up the Conductor environment. Run this once per project. | `.conductor/product.md`<br>`.conductor/tech-stack.md`<br>`.conductor/workflow.md`<br>`.conductor/plan.md` |
+| `/conductor:newTrack` | Starts a new feature or bug track. Generates `spec.md` and `plan.md`. | `.conductor/tracks/<id>/spec.md`<br>`.conductor/tracks/<id>/plan.md`<br>`.conductor/plan.md` |
+| `/conductor:implement` | Executes the tasks defined in the current track's plan. | `.conductor/plan.md`<br>`.conductor/tracks/<id>/plan.md` |
+| `/conductor:status` | Displays the current progress of the main plan and active tracks. | Reads `.conductor/plan.md` |
+| `/conductor:revert` | Reverts a track, phase, or task by analyzing git history. | Reverts git history |
 
 ## Resources
 
