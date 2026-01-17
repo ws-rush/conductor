@@ -11,7 +11,7 @@
   "plugins": [
     {
       "name": "conductor",
-      "source": ".",
+      "source": "../",
       "description": "Context-Driven Development framework. Enables strict protocol to specify, plan, and implement software features with context as a managed artifact.",
       "version": "0.2.0",
       "author": {
