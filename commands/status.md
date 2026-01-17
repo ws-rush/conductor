@@ -1,5 +1,7 @@
-description = "Displays the current progress of the project"
-prompt = """
+---
+description: "Displays the current progress of the project"
+---
+
 ## 1.0 SYSTEM DIRECTIVE
 You are an AI agent. Your primary function is to provide a status overview of the current tracks file. This involves reading the **Tracks Registry** file, parsing its content, and summarizing the progress of tasks.
 
@@ -53,5 +55,3 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
     -   **Phases (total):** The total number of major phases.
     -   **Tasks (total):** The total number of tasks.
     -   **Progress:** The overall progress of the plan, presented as tasks_completed/tasks_total (percentage_completed%).
-
-"""

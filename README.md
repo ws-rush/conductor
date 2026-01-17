@@ -1,8 +1,10 @@
-# Conductor Extension for Gemini CLI
+# Conductor Plugin for Claude Code
 
 **Measure twice, code once.**
 
-Conductor is a Gemini CLI extension that enables **Context-Driven Development**. It turns the Gemini CLI into a proactive project manager that follows a strict protocol to specify, plan, and implement software features and bug fixes.
+Conductor is a Claude Code plugin that enables **Context-Driven Development**. It turns Claude Code into a proactive project manager that follows a strict protocol to specify, plan, and implement software features and bug fixes.
+
+> **Note:** This is a fork of the original [Conductor Gemini CLI Extension](https://github.com/gemini-cli-extensions/conductor), adapted for use with Claude Code.
 
 Instead of just writing code, Conductor ensures a consistent, high-quality lifecycle for every task: **Context -> Spec & Plan -> Implement**.
 
@@ -19,13 +21,13 @@ The philosophy behind Conductor is simple: control your code. By treating contex
 
 ## Installation
 
-Install the Conductor extension by running the following command from your terminal:
+Install the Conductor plugin by running the following command from your terminal:
 
 ```bash
-gemini extensions install https://github.com/gemini-cli-extensions/conductor --auto-update
+/plugin install https://github.com/ws-rush/conductor
 ```
 
-The `--auto-update` is optional: if specified, it will update to new versions as they are released.
+The plugin will be automatically installed and available for use.
 
 ## Usage
 
@@ -43,6 +45,7 @@ When you run `/conductor:setup`, Conductor helps you define the core components 
 - **Workflow**: Set team preferences (e.g. TDD, commit strategy). Uses [workflow.md](templates/workflow.md) as a customizable template.
 
 **Generated Artifacts:**
+
 - `conductor/product.md`
 - `conductor/product-guidelines.md`
 - `conductor/tech-stack.md`
@@ -62,6 +65,7 @@ When you’re ready to take on a new feature or bug fix, run `/conductor:newTrac
 - **Plan**: An actionable to-do list containing phases, tasks, and sub-tasks.
 
 **Generated Artifacts:**
+
 - `conductor/tracks/<track_id>/spec.md`
 - `conductor/tracks/<track_id>/plan.md`
 - `conductor/tracks/<track_id>/metadata.json`
@@ -77,6 +81,7 @@ When you’re ready to take on a new feature or bug fix, run `/conductor:newTrac
 Once you approve the plan, run `/conductor:implement`. Your coding agent then works through the `plan.md` file, checking off tasks as it completes them.
 
 **Updated Artifacts:**
+
 - `conductor/tracks.md` (Status updates)
 - `conductor/tracks/<track_id>/plan.md` (Status updates)
 - Project context files (Synchronized on completion)
@@ -86,6 +91,7 @@ Once you approve the plan, run `/conductor:implement`. Your coding agent then wo
 ```
 
 Conductor will:
+
 1.  Select the next pending task.
 2.  Follow the defined workflow (e.g., TDD: Write Test -> Fail -> Implement -> Pass).
 3.  Update the status in the plan as it progresses.
@@ -104,17 +110,17 @@ During implementation, you can also:
 
 ## Commands Reference
 
-| Command | Description | Artifacts |
-| :--- | :--- | :--- |
-| `/conductor:setup` | Scaffolds the project and sets up the Conductor environment. Run this once per project. | `conductor/product.md`<br>`conductor/product-guidelines.md`<br>`conductor/tech-stack.md`<br>`conductor/workflow.md`<br>`conductor/tracks.md` |
-| `/conductor:newTrack` | Starts a new feature or bug track. Generates `spec.md` and `plan.md`. | `conductor/tracks/<id>/spec.md`<br>`conductor/tracks/<id>/plan.md`<br>`conductor/tracks.md` |
-| `/conductor:implement` | Executes the tasks defined in the current track's plan. | `conductor/tracks.md`<br>`conductor/tracks/<id>/plan.md` |
-| `/conductor:status` | Displays the current progress of the tracks file and active tracks. | Reads `conductor/tracks.md` |
-| `/conductor:revert` | Reverts a track, phase, or task by analyzing git history. | Reverts git history |
+| Command                | Description                                                                             | Artifacts                                                                                                                                    |
+| :--------------------- | :-------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/conductor:setup`     | Scaffolds the project and sets up the Conductor environment. Run this once per project. | `conductor/product.md`<br>`conductor/product-guidelines.md`<br>`conductor/tech-stack.md`<br>`conductor/workflow.md`<br>`conductor/tracks.md` |
+| `/conductor:newTrack`  | Starts a new feature or bug track. Generates `spec.md` and `plan.md`.                   | `conductor/tracks/<id>/spec.md`<br>`conductor/tracks/<id>/plan.md`<br>`conductor/tracks.md`                                                  |
+| `/conductor:implement` | Executes the tasks defined in the current track's plan.                                 | `conductor/tracks.md`<br>`conductor/tracks/<id>/plan.md`                                                                                     |
+| `/conductor:status`    | Displays the current progress of the tracks file and active tracks.                     | Reads `conductor/tracks.md`                                                                                                                  |
+| `/conductor:revert`    | Reverts a track, phase, or task by analyzing git history.                               | Reverts git history                                                                                                                          |
 
 ## Resources
 
-- [Gemini CLI extensions](https://geminicli.com/docs/extensions/): Documentation about using extensions in Gemini CLI
+- [Claude Code documentation](https://code.claude.com/docs/en/plugins-reference): Documentation about using plugins in Claude Code
 - [GitHub issues](https://github.com/gemini-cli-extensions/conductor/issues): Report bugs or request features
 
 ## Legal

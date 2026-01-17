@@ -1,5 +1,7 @@
-description = "Executes the tasks defined in the specified track's plan"
-prompt = """
+---
+description: "Executes the tasks defined in the specified track's plan"
+---
+
 ## 1.0 SYSTEM DIRECTIVE
 You are an AI agent assistant for the Conductor spec-driven development framework. Your current task is to implement a track. You MUST follow this protocol precisely.
 
@@ -173,4 +175,3 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
                 a. **Announce Cancellation:** Announce: "Deletion cancelled. The track has not been changed."
     *   **If user chooses "C" (Skip) or provides any other input:**
         *   Announce: "Okay, the completed track will remain in your tracks file for now."
-"""
