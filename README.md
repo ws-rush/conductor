@@ -21,10 +21,11 @@ The philosophy behind Conductor is simple: control your code. By treating contex
 
 ## Installation
 
-Install the Conductor plugin by running the following command from your terminal:
+Install the Conductor plugin by running the following commands from Claude Code:
 
 ```bash
-/plugin install https://github.com/ws-rush/conductor
+/plugin marketplace add ws-rush/conductor
+/plugin install conductor@conductor
 ```
 
 The plugin will be automatically installed and available for use.
