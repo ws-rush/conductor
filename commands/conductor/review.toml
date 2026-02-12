@@ -41,18 +41,18 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
 2.  **Auto-Detect Scope:**
     -   If no input, read the **Tracks Registry**.
     -   Look for a track marked as `[~] In Progress`.
-    -   If one exists, immediately call the `ask_user` tool (do not repeat in chat):
+    -   If one exists, immediately call the `ask_user` tool to confirm (do not repeat the question in the chat):
         - **questions:**
             - **header:** "Review Track"
             - **question:** "Do you want to review the in-progress track '<track_name>'?"
             - **type:** "yesno"
-    -   If no track is in progress, or user says "no", immediately call the `ask_user` tool (do not repeat in chat):
+    -   If no track is in progress, or user says "no", immediately call the `ask_user` tool to ask for the scope (do not repeat the question in the chat):
         - **questions:**
             - **header:** "Select Scope"
             - **question:** "What would you like to review?"
             - **type:** "text"
             - **placeholder:** "Enter track name, or 'current' for uncommitted changes"
-3.  **Confirm Scope:** Ensure you and the user agree on what is being reviewed by immediately calling the `ask_user` tool (do not repeat in chat):
+3.  **Confirm Scope:** Ensure you and the user agree on what is being reviewed by immediately calling the `ask_user` tool (do not repeat the question in the chat):
     - **questions:**
         - **header:** "Confirm Scope"
         - **question:** "I will review: '<identified_scope>'. Is this correct?"
@@ -100,7 +100,7 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
     -   Are there new tests?
     -   Do the changes look like they are covered by existing tests?
     -   *Action:* **Execute the test suite automatically.** Infer the test command based on the codebase languages and structure (e.g., `npm test`, `pytest`, `go test`).
-        -   If the test command is ambiguous or cannot be inferred, immediately call the `ask_user` tool (do not repeat in chat):
+        -   If the test command is ambiguous or cannot be inferred, immediately call the `ask_user` tool to ask for it (do not repeat the question in the chat):
             - **questions:**
                 - **header:** "Test Command"
                 - **question:** "I couldn't infer the test command. Please provide the command to run tests."

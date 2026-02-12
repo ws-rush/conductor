@@ -31,10 +31,11 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
 2.  **Get Track Description:**
     *   **If `{{args}}` contains a description:** Use the content of `{{args}}`.
     *   **If `{{args}}` is empty:** Ask the user using the `ask_user` tool:
-        - **Header:** "Description"
-        - **Type:** "text"
-        - **Question:** "Please provide a brief description of the track (feature, bug fix, chore, etc.) you wish to start."
-        - **Placeholder:** "e.g., Implement user authentication"
+        - **questions:**
+            - **header:** "Description"
+            - **type:** "text"
+            - **question:** "Please provide a brief description of the track (feature, bug fix, chore, etc.) you wish to start."
+            - **placeholder:** "e.g., Implement user authentication"
         Await the user's response and use it as the track description.
 3.  **Infer Track Type:** Analyze the description to determine if it is a "Feature" or "Something Else" (e.g., Bug, Chore, Refactor). Do NOT ask the user to classify it.
 
@@ -54,11 +55,11 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
             *   Use **Additive** for brainstorming and defining scope (e.g., users, goals, features, project guidelines). These questions allow for multiple answers.
             *   Use **Exclusive Choice** for foundational, singular commitments (e.g., selecting a primary technology, a specific workflow rule). These questions require a single answer.
         
-        *   **2. Formulate the Question:** Use the `ask_user` tool:** Adhere to the following for each question in the `questions` array:
+        *   **2. Formulate the Question:** Use the `ask_user` tool: Adhere to the following for each question in the `questions` array:
             - **header:** Very short label (max 16 chars).
             - **type:** "choice", "text", or "yesno".
             - **multiSelect:** (Required for type: "choice") Set to `true` for multi-select (additive) or `false` for single-choice (exclusive).
-            - **options:** (Required for type: "choice") Provide 2-4 options. Note that "Other" is automatically added.
+            - **options:** (Required for type: "choice") Provide 2-4 options, each with a `label` and `description`. Note that "Other" is automatically added.
             - **placeholder:** (For type: "text") Provide a hint.
 
         *   **3. Interaction Flow:**
@@ -78,21 +79,17 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
 
 3.  **Draft `spec.md`:** Once sufficient information is gathered, draft the content for the track's `spec.md` file, including sections like Overview, Functional Requirements, Non-Functional Requirements (if any), Acceptance Criteria, and Out of Scope.
 
-4.  **User Confirmation:** Present the drafted `spec.md` content and ask for approval using the `ask_user` tool.
-    - **header:** "Confirm Spec"
-    - **question:**
-     > "I've drafted the specification for this track. Please review the following:"
-    >
-    > ```markdown
-    > [Drafted spec.md content here]
-    > ```
-    >
-    > "Does this accurately capture the requirements?"
-    - **type:** "choice"
-    - **multiSelect:** `false`
-    - **options:**
-        - Label: "Approve"
-        - Label: "Revise"
+4.  **User Confirmation:**
+    -   **Present Content:** First, display the drafted `spec.md` content to the user in the chat.
+    -   **Ask for Approval:** Then, use the `ask_user` tool to request confirmation:
+        - **questions:**
+            - **header:** "Confirm Spec"
+            - **question:** "Does this accurately capture the requirements?"
+            - **type:** "choice"
+            - **multiSelect:** false
+            - **options:**
+                - Label: "Approve", Description: "The specification looks correct, proceed to planning."
+                - Label: "Revise", Description: "I want to make changes to the requirements."
     Await user feedback and revise the `spec.md` content until confirmed.
 
 ### 2.3 Interactive Plan Generation (`plan.md`)
@@ -110,21 +107,17 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
         - Sub-task: `    - [ ] ...`
     *   **CRITICAL: Inject Phase Completion Tasks.** Determine if a "Phase Completion Verification and Checkpointing Protocol" is defined in the **Workflow**. If this protocol exists, then for each **Phase** that you generate in `plan.md`, you MUST append a final meta-task to that phase. The format for this meta-task is: `- [ ] Task: Conductor - User Manual Verification '<Phase Name>' (Protocol in workflow.md)`.
 
-3.  **User Confirmation:** Present the drafted `plan.md` content and ask for approval using the `ask_user` tool.
-    - **header:** "Confirm Plan"
-    - **question:**
-    > "I've drafted the implementation plan. Please review the following:"
-    >
-    > ```markdown
-    > [Drafted plan.md content here]
-    > ```
-    >
-    > "Does this plan look correct and cover all the necessary steps based on the spec and our workflow?"
-    - **type:** "choice"
-    - **multiSelect:** `false`
-    - **options:**
-        - Label: "Approve"
-        - Label: "Revise"
+3.  **User Confirmation:**
+    -   **Present Content:** First, display the drafted `plan.md` content to the user in the chat.
+    -   **Ask for Approval:** Then, use the `ask_user` tool to request confirmation:
+        - **questions:**
+            - **header:** "Confirm Plan"
+            - **question:** "Does this plan look correct and cover all the necessary steps?"
+            - **type:** "choice"
+            - **multiSelect:** false
+            - **options:**
+                - Label: "Approve", Description: "The plan looks solid, proceed to implementation."
+                - Label: "Revise", Description: "I want to modify the implementation steps."
     Await user feedback and revise the `plan.md` content until confirmed.
 
 ### 2.4 Create Track Artifacts and Update Main Plan
