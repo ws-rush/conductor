@@ -1,34 +1,24 @@
 {
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "conductor",
+  "description": "Directory of Conductor Claude Code extensions",
   "owner": {
     "name": "ws-rush",
     "email": "rush@wusaby.com"
   },
-  "metadata": {
-    "description": "Conductor: Context-Driven Development framework for Claude Code. Measure twice, code once.",
-    "version": "0.3.0"
-  },
   "plugins": [
     {
       "name": "conductor",
-      "source": "./plugins/conductor",
       "description": "Context-Driven Development framework. Enables strict protocol to specify, plan, and implement software features with context as a managed artifact.",
       "version": "0.3.0",
       "author": {
-        "name": "ws-rush"
+        "name": "ws-rush",
+        "email": "rush@wusaby.com"
       },
-      "homepage": "https://github.com/ws-rush/conductor",
-      "repository": "https://github.com/ws-rush/conductor",
-      "license": "Apache-2.0",
-      "keywords": [
-        "project-management",
-        "context-driven",
-        "development-framework",
-        "planning",
-        "specification",
-        "workflow"
-      ],
-      "category": "productivity"
+      "source": "./plugins/conductor",
+      "category": "productivity",
+      "strict": false,
+      "homepage": "https://github.com/ws-rush/conductor"
     }
   ]
 }

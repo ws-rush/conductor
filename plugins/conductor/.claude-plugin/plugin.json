@@ -1,14 +1,8 @@
 {
   "name": "conductor",
-  "description": "Context-Driven Development framework. Measure twice, code once.",
   "version": "0.3.0",
+  "description": "Context-Driven Development framework. Measure twice, code once.",
   "author": {
     "name": "gemini-cli-extensions"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ws-rush/conductor",
-    "directory": "plugins/conductor"
-  },
-  "license": "Apache-2.0"
+  }
 }
