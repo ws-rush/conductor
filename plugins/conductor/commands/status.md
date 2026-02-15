@@ -10,7 +10,21 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
 ---
 
 
-## 1.1 SETUP CHECK
+## 1.1 PRE-INITIALIZATION OVERVIEW
+
+1.  **Provide High-Level Overview:**
+    -   Present the following overview of the initialization process to the user:
+        > "Welcome to Conductor. I will guide you through the following steps to set up your project:
+        > 1. **Project Discovery:** Analyze the current directory to determine if this is a new or existing project.
+        > 2. **Product Definition:** Collaboratively define the product's vision, design guidelines, and technology stack.
+        > 3. **Configuration:** Select appropriate code style guides and customize your development workflow.
+        > 4. **Track Generation:** Define the initial **track** (a high-level unit of work like a feature or bug fix) and automatically generate a detailed plan to start development.
+        >
+        > Let's get started!"
+
+---
+
+## 1.2 SETUP CHECK
 **PROTOCOL: Verify that the Conductor environment is properly set up.**
 
 1.  **Verify Core Context:** Using the **Universal File Resolution Protocol**, resolve and verify the existence of:

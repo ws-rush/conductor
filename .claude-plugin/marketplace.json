@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Conductor: Context-Driven Development framework for Claude Code. Measure twice, code once.",
-    "version": "0.2.0"
+    "version": "0.3.0"
   },
   "plugins": [
     {
       "name": "conductor",
       "source": "./plugins/conductor",
       "description": "Context-Driven Development framework. Enables strict protocol to specify, plan, and implement software features with context as a managed artifact.",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "author": {
         "name": "ws-rush"
       },

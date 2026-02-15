@@ -108,6 +108,10 @@ During implementation, you can also:
   ```bash
   /conductor:revert
   ```
+- **Review work**: Review completed work against guidelines and the plan.
+  ```bash
+  /conductor:review
+  ```
 
 ## Commands Reference
 
@@ -118,6 +122,7 @@ During implementation, you can also:
 | `/conductor:implement` | Executes the tasks defined in the current track's plan.                                 | `conductor/tracks.md`<br>`conductor/tracks/<id>/plan.md`                                                                                     |
 | `/conductor:status`    | Displays the current progress of the tracks file and active tracks.                     | Reads `conductor/tracks.md`                                                                                                                  |
 | `/conductor:revert`    | Reverts a track, phase, or task by analyzing git history.                               | Reverts git history                                                                                                                          |
+| `/conductor:review` | Reviews completed work against guidelines and the plan. | Reads `plan.md`, `product-guidelines.md` |
 
 ## Resources
 
