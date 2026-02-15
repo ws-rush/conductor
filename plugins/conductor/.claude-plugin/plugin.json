@@ -5,5 +5,10 @@
   "author": {
     "name": "gemini-cli-extensions"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ws-rush/conductor",
+    "directory": "plugins/conductor"
+  },
   "license": "Apache-2.0"
 }
