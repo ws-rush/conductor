@@ -209,3 +209,5 @@ __marimo__/
 tmp/
 
 /.gemini/tmp/
+
+node_modules/

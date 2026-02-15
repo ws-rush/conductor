@@ -1,0 +1,29 @@
+{
+  "name": "conductor",
+  "version": "0.3.0",
+  "type": "module",
+  "private": true,
+  "description": "Context-Driven Development framework. Measure twice, code once.",
+  "keywords": [
+    "conductor",
+    "context-driven",
+    "development"
+  ],
+  "license": "Apache-2.0",
+  "author": "ws-rush",
+  "homepage": "https://github.com/ws-rush/conductor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ws-rush/conductor.git"
+  },
+  "files": [
+    "plugins",
+    "README.md",
+    "LICENSE"
+  ],
+  "pi": {
+    "prompts": [
+      "./plugins/conductor/commands"
+    ]
+  }
+}
