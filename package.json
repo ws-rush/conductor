@@ -23,7 +23,7 @@
   ],
   "pi": {
     "prompts": [
-      "./prompts"
+      "./plugins/conductor/prompts"
     ]
   }
 }
