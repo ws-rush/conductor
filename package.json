@@ -18,12 +18,13 @@
   },
   "files": [
     "plugins",
+    "prompts",
     "README.md",
     "LICENSE"
   ],
   "pi": {
     "prompts": [
-      "./plugins/conductor/commands"
+      "./prompts"
     ]
   }
 }
