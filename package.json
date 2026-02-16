@@ -18,7 +18,6 @@
   },
   "files": [
     "plugins",
-    "prompts",
     "README.md",
     "LICENSE"
   ],
