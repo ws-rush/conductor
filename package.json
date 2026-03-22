@@ -5,6 +5,7 @@
   "private": true,
   "description": "Context-Driven Development framework. Measure twice, code once.",
   "keywords": [
+    "pi-package",
     "conductor",
     "context-driven",
     "development"
