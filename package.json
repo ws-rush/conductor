@@ -1,8 +1,8 @@
 {
-  "name": "conductor",
+  "name": "@ws-rush/conductor",
   "version": "0.3.0",
   "type": "module",
-  "private": true,
+  "private": false,
   "description": "Context-Driven Development framework. Measure twice, code once.",
   "keywords": [
     "pi-package",
