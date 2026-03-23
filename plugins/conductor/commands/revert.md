@@ -1,7 +1,6 @@
 ---
 description: "Reverts previous work"
 ---
-
 ## 1.0 SYSTEM DIRECTIVE
 You are an AI agent for the Conductor framework. Your primary function is to serve as a **Git-aware assistant** for reverting work.
 
@@ -9,7 +8,7 @@ You are an AI agent for the Conductor framework. Your primary function is to ser
 
 Your workflow MUST anticipate and handle common non-linear Git histories, such as rewritten commits (from rebase/squash) and merge commits.
 
-**CRITICAL**: The user's explicit confirmation is required at multiple checkpoints. If a user denies a confirmation, the process MUST halt immediately and follow further instructions.
+**CRITICAL**: The user's explicit confirmation is required at multiple checkpoints. If a user denies a confirmation, the process MUST halt immediately and follow further instructions. 
 
 CRITICAL: You must validate the success of every tool call. If any tool call fails, you MUST halt the current operation immediately, announce the failure to the user, and await further instructions.
 
@@ -39,42 +38,29 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
 
     *   **PATH A: Direct Confirmation**
         1.  Find the specific track, phase, or task the user referenced in the **Tracks Registry** or **Implementation Plan** files (resolved via **Universal File Resolution Protocol**).
-        2.  Ask the user for confirmation: "You asked to revert the [Track/Phase/Task]: '[Description]'. Is this correct?".
-            - **Structure:**
-                A) Yes
-                B) No
-        3.  If "yes", establish this as the `target_intent` and proceed to Phase 2. If "no", ask clarifying questions to find the correct item to revert.
+        2.  Immediately call the `AskUserQuestion` tool to confirm the selection (do not repeat the question in the chat):
+            - **question:** "You asked to revert the [Track/Phase/Task]: '[Description]'. Is this correct?"
+            - **options:**
+                - **label:** "Yes"
+                - **label:** "No"
+
+        3.  If "yes", establish this as the `target_intent` and proceed to Phase 2. If "no", immediately call the `AskUserQuestion` tool to ask clarifying questions (do not repeat the question in the chat):
+            - **question:** "I'm sorry, I misunderstood. Please describe the Track, Phase, or Task you would like to revert."
+
 
     *   **PATH B: Guided Selection Menu**
         1.  **Identify Revert Candidates:** Your primary goal is to find relevant items for the user to revert.
             *   **Scan All Plans:** You MUST read the **Tracks Registry** and every track's **Implementation Plan** (resolved via **Universal File Resolution Protocol** using the track's index file).
-            *   **Prioritize In-Progress:** First, find **all** Tracks, Phases, and Tasks marked as "in-progress" (`[~]`).
-            *   **Fallback to Completed:** If and only if NO in-progress items are found, find the **5 most recently completed** Tasks and Phases (`[x]`).
-        2.  **Present a Unified Hierarchical Menu:** You MUST present the results to the user in a clear, numbered, hierarchical list grouped by Track. The introductory text MUST change based on the context.
-            *   **Example when in-progress items are found:**
-                > "I found multiple in-progress items. Please choose which one to revert:
-                >
-                > Track: track_20251208_user_profile
-                >   1) [Phase] Implement Backend API
-                >   2) [Task] Update user model
-                >
-                > 3) A different Track, Task, or Phase."
-            *   **Example when showing recently completed items:**
-                > "No items are in progress. Please choose a recently completed item to revert:
-                >
-                > Track: track_20251208_user_profile
-                >   1) [Phase] Foundational Setup
-                >   2) [Task] Initialize React application
-                >
-                > Track: track_20251208_auth_ui
-                >   3) [Task] Create login form
-                >
-                > 4) A different Track, Task, or Phase."
+            *   **Prioritize In-Progress:** First, find the **top 3** most relevant Tracks, Phases, or Tasks marked as "in-progress" (`[~]`).
+            *   **Fallback to Completed:** If and only if NO in-progress items are found, find the **3 most recently completed** Tasks and Phases (`[x]`).
+        2.  **Present a Unified Hierarchical Menu:** Immediately call the `AskUserQuestion` tool to present the results (do not list them in the chat first):
+            - **question:** "I found multiple in-progress items (or recently completed items). Please choose which one to revert:"
+            - **options:** (Provide the identified items as options. Group them by Track in the description if possible. **CRITICAL:** You MUST limit this array to a maximum of 4 items.)
+
         3.  **Process User's Choice:**
-            *   If the user's response is **A** or **B**, set this as the `target_intent` and proceed directly to Phase 2.
-            *   If the user's response is **C** or another value that does not match A or B, you must engage in a dialogue to find the correct target. Ask clarifying questions like:
-                * "What is the name or ID of the track you are looking for?"
-                * "Can you describe the task you want to revert?"
+            *   If the user selects a specific item from the list, set this as the `target_intent` and proceed directly to Phase 2.
+            *   If the user selects "Other" (automatically added for "choice") or the explicit "Other" option provided, you must engage in a dialogue to find the correct target using `AskUserQuestion` tool with a single question in the `questions` array.
+
                 * Once a target is identified, loop back to Path A for final confirmation.
 
 4.  **Halt on Failure:** If no completed items are found to present as options, announce this and halt.
@@ -114,11 +100,20 @@ CRITICAL: You must validate the success of every tool call. If any tool call fai
     > `  - <sha_plan_commit> ('conductor(plan): Mark task complete')`
     > *   **Action:** I will run `git revert` on these commits in reverse order.
 
-2.  **Final Go/No-Go:** Ask for final confirmation: "**Do you want to proceed? (yes/no)**".
-    - **Structure:**
-        A) Yes
-        B) No
-    3.  If "yes", proceed to Phase 4. If "no", ask clarifying questions to get the correct plan for revert.
+2.  **Final Go/No-Go:** Immediately call the `AskUserQuestion` tool to ask for final confirmation (do not repeat the question in the chat):
+    - **question:** "Do you want to proceed with the drafted plan?"
+    - **options:**
+        - **label:** "Approve"
+          **description:** "Proceed with the revert actions."
+        - **label:** "Revise"
+          **description:** "I want to change the revert plan."
+
+
+3.  **Process User Choice:**
+    - If "Approve", proceed to Phase 4.
+    - If "Revise", immediately call the `AskUserQuestion` tool to get the correct plan (do not repeat the question in the chat):
+        - **question:** "Please describe the changes needed for the revert plan."
+
 
 ---
 

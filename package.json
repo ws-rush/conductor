@@ -25,6 +25,9 @@
   "pi": {
     "prompts": [
       "./plugins/conductor/prompts"
+    ],
+    "extensions": [
+      "./plugins/conductor/index.js"
     ]
   }
 }
