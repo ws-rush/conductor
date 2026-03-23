@@ -10,7 +10,7 @@
     {
       "name": "conductor",
       "description": "Context-Driven Development framework. Enables strict protocol to specify, plan, and implement software features with context as a managed artifact.",
-      "version": "0.3.0",
+      "version": "0.4.1",
       "author": {
         "name": "ws-rush",
         "email": "rush@wusaby.com"
