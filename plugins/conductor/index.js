@@ -1,4 +1,3 @@
-import { pi } from "@mariozechner/pi-coding-agent";
 import { Type } from "@sinclair/typebox";
 import fs from 'fs';
 
@@ -46,43 +45,46 @@ function promptUserFallback(questionObj) {
   }
 }
 
-pi.registerTool({
-  name: "ask_user",
-  description: "Interactively prompts the user with questions. Supports text, choice, and yesno types.",
-  parameters: Type.Object({
-    questions: Type.Array(
-      Type.Object({
-        header: Type.Optional(Type.String({ description: "Optional header for the question section" })),
-        question: Type.String({ description: "The question prompt text" }),
-        type: Type.String({ enum: ["text", "choice", "yesno"], description: "The input response type" }),
-        multiSelect: Type.Optional(Type.Boolean({ description: "Allow multiple selections" })),
-        options: Type.Optional(Type.Array(Type.Any(), { description: "List of options for choice types" }))
-      })
-    )
-  }),
-  execute: async (toolCallId, params) => {
-    let answers = [];
-    const questions = params.questions || [];
-    
-    for (const q of questions) {
-       let ans;
-       // Attempt to use framework TUI prompt if available
-       if (pi.ui && typeof pi.ui.input === 'function') {
-          if (q.type === 'yesno') {
-             ans = await pi.ui.confirm(q.question) ? 'Yes' : 'No';
-          } else if (q.type === 'choice' && q.options) {
-             const labels = q.options.map(opt => opt.label || opt.Label || opt);
-             ans = await pi.ui.select(q.question, labels, { multi: q.multiSelect || false });
-          } else {
-             ans = await pi.ui.input(q.question);
-          }
-       } else {
-          // Fallback to raw tty pipeline if non-buffered overlays are needed
-          ans = promptUserFallback(q);
-       }
-       answers.push({ header: q.header || '', question: q.question, answer: ans });
-    }
-    
-    return { content: [{ type: "text", text: JSON.stringify(answers) }] };
-  },
-});
+export default function (pi) {
+  pi.registerTool({
+    name: "ask_user",
+    label: "Ask User",
+    description: "Interactively prompts the user with questions. Supports text, choice, and yesno types.",
+    parameters: Type.Object({
+      questions: Type.Array(
+        Type.Object({
+          header: Type.Optional(Type.String({ description: "Optional header for the question section" })),
+          question: Type.String({ description: "The question prompt text" }),
+          type: Type.String({ enum: ["text", "choice", "yesno"], description: "The input response type" }),
+          multiSelect: Type.Optional(Type.Boolean({ description: "Allow multiple selections" })),
+          options: Type.Optional(Type.Array(Type.Any(), { description: "List of options for choice types" }))
+        })
+      )
+    }),
+    execute: async (toolCallId, params, _signal, _onUpdate, ctx) => {
+      let answers = [];
+      const questions = params.questions || [];
+      
+      for (const q of questions) {
+         let ans;
+         // Attempt to use framework TUI prompt if available
+         if (ctx.ui && typeof ctx.ui.input === 'function') {
+            if (q.type === 'yesno') {
+               ans = await ctx.ui.confirm(q.header || "Question", q.question) ? 'Yes' : 'No';
+            } else if (q.type === 'choice' && q.options) {
+               const labels = q.options.map(opt => opt.label || opt.Label || opt);
+               ans = await ctx.ui.select(q.question, labels);
+            } else {
+               ans = await ctx.ui.input(q.question);
+            }
+         } else {
+            // Fallback to raw tty pipeline if non-buffered overlays are needed
+            ans = promptUserFallback(q);
+         }
+         answers.push({ header: q.header || '', question: q.question, answer: ans });
+      }
+      
+      return { content: [{ type: "text", text: JSON.stringify(answers) }] };
+    },
+  });
+}
